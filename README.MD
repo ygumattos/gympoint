@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img alt="Gympoint" title="Gympoint" src=".github/logo.png" width="200px" />
+  GymPoint
 </h1>
 
 <blockquote align="center">“Não espere para plantar, apenas tenha paciência para colher”!</blockquote>
