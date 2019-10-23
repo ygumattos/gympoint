@@ -15,7 +15,7 @@ routes.get('/students', StudentsController.index);
 // post
 routes.post('/users', UserController.store);
 routes.post('/sessions', SessionController.store);
-// routes.post('/students', StudentsController.store);
+routes.post('/students', StudentsController.store);
 
 // Middleware
 routes.use(authMiddleware);
