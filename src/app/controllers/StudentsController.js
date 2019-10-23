@@ -1,6 +1,7 @@
 import * as Yup from 'yup';
 
 import Student from '../models/Student';
+import Admin from '../models/User';
 
 class StudentsController {
   async index(req, res){
@@ -28,6 +29,14 @@ class StudentsController {
       return res.status(400).json({ error: `Students already exist !`});
     }
 
+    const admin = await Admin.findByPk(req.userID);
+
+    if(!admin){
+      return res.status(400).json({ error: `You need an admin for your register!`});
+    }
+
+
+
     const {name, email, age} = await Student.create(req.body);
 
     return res.json({
@@ -35,6 +44,10 @@ class StudentsController {
         name,
         email,
         age
+      },
+      admin: {
+        name: admin.name,
+        email: admin.email
       }
     })
   }
