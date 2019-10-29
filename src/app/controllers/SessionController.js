@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import * as Yup from 'yup';
+import * as Yup from 'yup'
 
 import User from '../models/User';
 import authConfig from '../../config/auth';
@@ -21,11 +21,11 @@ class SessionController {
     const user = await User.findOne({ where: { email } });
 
     if(!user) {
-      return res.status(404).json({ error: 'User not found !' })
+      return res.status(404).json({ error: 'User not found !' });
     };
 
     if(!(await user.comparePassword(password))){
-      return res.status(404).json({ error: 'Incorret password!' })
+      return res.status(404).json({ error: 'Incorret password!' });
     };
 
     const { id, name } = user;

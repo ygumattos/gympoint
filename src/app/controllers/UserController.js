@@ -20,7 +20,7 @@ class UserController {
       return res.status(400).json({ error: `Validation fails`});
     }
 
-    const userExist = User.findOne({where: { email: req.body.email}});
+    const userExist = await User.findOne({where: { email: req.body.email}});
 
     if(userExist){
       return res.status(400).json({ error: `User's already exist !`});
@@ -51,6 +51,8 @@ class UserController {
       return res.status(400).json({ error: `Validation fails`});
     }
 
+    // if(req.body.oldPassword === undefined) req.body.oldPassword = "";
+
     const { email, oldPassword } = req.body;
 
     const user = await User.findByPk(req.userID);
@@ -60,13 +62,14 @@ class UserController {
     }
 
     if( email !== user.email){
-      const userExist = await User.findOne({ where: { email } })
+      const userExist = await User.findOne({ where: { email } });
+      console.log(userExist)
       if(userExist) {
         return res.status(400).json({ error: `User's already exist !`});
       }
     }
 
-    if(!oldPassword && !(await user.comparePassword(oldPassword))){
+    if(oldPassword && !(await user.comparePassword(oldPassword))){
       return res.status(401).json({ error: 'Password does not match' });
     }
 
