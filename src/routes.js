@@ -22,6 +22,9 @@ routes.use(authMiddleware);
 
 // Routes with Middleware
 routes.get('/plans', PlansController.index);
+routes.post('/plans', PlansController.create);
+routes.put('/plans/:id', PlansController.update);
+routes.delete('/plans/:id', PlansController.delete);
 
 routes.post('/students', StudentsController.store);
 
