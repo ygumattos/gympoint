@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
-import { parseISO, startOfDay, addMonths } from 'date-fns';
+import { parseISO, startOfDay, addMonths, format } from 'date-fns';
+import pt from 'date-fns/locale/pt';
 
 import Registration from '../models/Registration'
 import Student from '../models/Student';
@@ -57,7 +58,7 @@ class RegistrationsController{
     try {
       const price = plan.price * plan.duration;
 
-      const {id, end_date, start_date} = await Registration.create({
+      const registration = await Registration.create({
         start_date: parsedDateStart,
         end_date: dateEnd,
         price,
@@ -72,16 +73,31 @@ class RegistrationsController{
         Send EMAIL
       */
 
-      Mail.sendMail({
+      const formatStartDate = format(
+        registration.start_date,
+        "'dia' dd 'de' MMMM 'de' yyyy",
+        { locale: pt });
+      const formatEndDate = format(registration.end_date,
+        "'dia' dd 'de' MMMM 'de' yyyy", { locale: pt });
+
+      await Mail.sendMail({
         to: 'Ygor Mattos <ygormattos.b@gmail.com>',
         subject: 'Matricula efetuada com sucesso',
-        text: 'Você está matriculado na academia GymPoint'
+        template: 'registration',
+        context: {
+          student: student.name,
+          plan: plan.title,
+          start_date: formatStartDate,
+          end_date: formatEndDate,
+        }
       })
+
+      const {id, end_date, start_date} = registration;
 
       return res.json({id, start_date, end_date, price})
 
     } catch (err) {
-      return res.status(501).json({error: "Internal server error"})
+      return res.status(501).json({error: "Internal server error", err})
     }
 
   }
