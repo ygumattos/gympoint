@@ -9,7 +9,7 @@ class PlansController {
     return res.json(plans);
   }
 
-  async create(req, res){
+  async store(req, res){
 
     const schema = Yup.object().shape({
       title: Yup.string().required("Title's required"),
@@ -45,7 +45,7 @@ class PlansController {
     try {
       await schema.validate(req.body)
     } catch (err) {
-      return res.json(err.message)
+      return res.json({error: err.message})
     }
 
     const plan = await Plan.findByPk(req.params.id);
@@ -79,7 +79,7 @@ class PlansController {
     try {
       await plan.destroy();
 
-      return res.json({msg: `The plan '${title}' was deleted.`})
+      return res.json({msg: `The plan '${title}' has been deleted.`})
     } catch (error) {
       return res.status(500).json({ error: 'Internal Error' });
     }

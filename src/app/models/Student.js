@@ -8,9 +8,12 @@ class Student extends Model {
       age: Sequelize.INTEGER,
       weight: Sequelize.FLOAT,
       height: Sequelize.FLOAT,
+      registrated: Sequelize.BOOLEAN
     },{
       sequelize
     });
+
+    return this;
   }
 }
 
