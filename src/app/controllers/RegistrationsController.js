@@ -5,6 +5,8 @@ import Registration from '../models/Registration'
 import Student from '../models/Student';
 import Plan from '../models/Plan';
 
+import Mail from '../../lib/Mail';
+
 
 class RegistrationsController{
 
@@ -52,20 +54,36 @@ class RegistrationsController{
     const parsedDateStart = startOfDay(parseISO(startDate));
     const dateEnd = addMonths(parsedDateStart, plan.duration);
 
-    const price = plan.price * plan.duration;
+    try {
+      const price = plan.price * plan.duration;
 
-    const {id, end_date, start_date} = await Registration.create({
-      start_date: parsedDateStart,
-      end_date: dateEnd,
-      price,
-      student_id,
-      plan_id
-    })
+      const {id, end_date, start_date} = await Registration.create({
+        start_date: parsedDateStart,
+        end_date: dateEnd,
+        price,
+        student_id,
+        plan_id
+      })
 
-    student.registrated = true;
-    await student.save();
+      student.registrated = true;
+      await student.save();
 
-    return res.json({id, start_date, end_date, price})
+      /*
+        Send EMAIL
+      */
+
+      Mail.sendMail({
+        to: 'Ygor Mattos <ygormattos.b@gmail.com>',
+        subject: 'Matricula efetuada com sucesso',
+        text: 'Você está matriculado na academia GymPoint'
+      })
+
+      return res.json({id, start_date, end_date, price})
+
+    } catch (err) {
+      return res.status(501).json({error: "Internal server error"})
+    }
+
   }
 }
 
