@@ -1,13 +1,12 @@
 import * as Yup from 'yup';
-import { parseISO, startOfDay, addMonths, format } from 'date-fns';
-import pt from 'date-fns/locale/pt';
+import { parseISO, startOfDay, addMonths } from 'date-fns';
 
 import Registration from '../models/Registration'
 import Student from '../models/Student';
 import Plan from '../models/Plan';
 
-import Mail from '../../lib/Mail';
-
+import Queue from '../../lib/Queue';
+import RegistrationMail from '../jobs/RegistrationMail';
 
 class RegistrationsController{
 
@@ -73,28 +72,9 @@ class RegistrationsController{
         Send EMAIL
       */
 
-      const formatStartDate = format(
-        registration.start_date,
-        "'dia' dd 'de' MMMM 'de' yyyy",
-        { locale: pt });
-      const formatEndDate = format(registration.end_date,
-        "'dia' dd 'de' MMMM 'de' yyyy", { locale: pt });
+      await Queue.add(RegistrationMail.key, { registration, student, plan })
 
-      await Mail.sendMail({
-        to: 'Ygor Mattos <ygormattos.b@gmail.com>',
-        subject: 'Matricula efetuada com sucesso',
-        template: 'registration',
-        context: {
-          student: student.name,
-          plan: plan.title,
-          start_date: formatStartDate,
-          end_date: formatEndDate,
-        }
-      })
-
-      const {id, end_date, start_date} = registration;
-
-      return res.json({id, start_date, end_date, price})
+      return res.json(registration)
 
     } catch (err) {
       return res.status(501).json({error: "Internal server error", err})
