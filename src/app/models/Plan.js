@@ -12,6 +12,10 @@ class Plan extends Model {
 
     return this;
   }
+
+  totalPrice(){
+    return this.duration * this.price;
+  }
 }
 
 export default Plan;

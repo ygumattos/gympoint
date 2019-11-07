@@ -32,6 +32,8 @@ routes.post('/students', StudentsController.store);
 routes.put('/users', UserController.update);
 
 routes.post('/registrations', RegistrationsController.store);
+routes.get('/registrations', RegistrationsController.index);
+routes.put('/registrations/:id', RegistrationsController.update);
 
 
 
