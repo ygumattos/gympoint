@@ -1,0 +1,54 @@
+version: '3'
+
+serives:
+  gympoint-post:
+    image: postgres:11
+    container_name: postgres_gympoint
+    environment:
+      - ALLOW_EMPTY_PASSWORD
+      - POSTGRES_PASSWORD=${DB_PASS}
+    volumes:
+      - gympoint-post-default
+    networks:
+      - gympoint-network
+
+  gympoint-mongo:
+    image: mongo:alpine
+    container_name: mongodb_gympoint
+    volumes:
+      - gympoint-mongo-default
+    networks:
+      - gympoint-network
+
+  gympoint-redis:
+    image: redis:alpine
+    container_name: redis_db_gympoint
+    volumes:
+      - gympoint-redis-default
+    networks:
+      - gympoint-network
+
+  gympoint-api:
+    build: .
+    container_name: gympoint-api
+    volumes:
+      - .:/home/node/api
+      - /home/node/api/node_modules
+    ports:
+      - '3000:3000'
+    depends_on:
+      - gympoint-post
+      - gympoint-mongo
+      - gympoint-redis
+    networks:
+      - gympoint-network
+
+volumes:
+  gympoint-post-default:
+  gympoint-mongo-default:
+  gympoint-redis-default:
+
+
+networks:
+  gympoint-network:
+    driver: bridge

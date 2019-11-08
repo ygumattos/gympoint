@@ -62,3 +62,5 @@ O usuário só pode fazer 5 checkins dentro de um período de 7 dias corridos.
 
  Quando um pedido de auxílio for respondido, o aluno deve recebe um e-mail da plataforma com a pergunta e resposta da academia;
 
+#7159c1
+

@@ -17,7 +17,7 @@ class RegistrationMail{
       "'dia' dd 'de' MMMM 'de' yyyy", { locale: pt });
 
     await Mail.sendMail({
-      to: 'Ygor Mattos <ygormattos.b@gmail.com>',
+      to: 'Admnistrador <noreplay@gympoint.com>',
       subject: 'Matricula efetuada com sucesso',
       template: 'registration',
       context: {

@@ -27,7 +27,7 @@ class Database {
 
   mongo() {
     this.mongoConnection = mongoose.connect(
-     'mongodb://localhost:27017/gympoint', {
+      process.env.MONGO_UR, {
        useNewUrlParser: true,
        useFindAndModify: true,
        useUnifiedTopology: true
