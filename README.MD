@@ -14,7 +14,13 @@ App gerenciador de academia, o **Gympoint**.
 - Sucrase + Nodemon;
 - ESLint + Prettier + EditorConfig;
 - Sequelize (Utilize PostgreSQL ou MySQL);
+- MongoDB
+- Bcryptjs
 - JWT
+- Nodemailer
+- Redis
+- Yup
+- Date-dns
 
 ### Funcionalidades do administrador
 
