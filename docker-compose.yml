@@ -1,6 +1,6 @@
 version: '3'
 
-serives:
+services:
   gympoint-post:
     image: postgres:11
     container_name: postgres_gympoint
@@ -13,7 +13,7 @@ serives:
       - gympoint-network
 
   gympoint-mongo:
-    image: mongo:alpine
+    image: mongo
     container_name: mongodb_gympoint
     volumes:
       - gympoint-mongo-default
@@ -21,7 +21,7 @@ serives:
       - gympoint-network
 
   gympoint-redis:
-    image: redis:alpine
+    image: redis
     container_name: redis_db_gympoint
     volumes:
       - gympoint-redis-default
